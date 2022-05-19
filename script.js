@@ -1,17 +1,8 @@
+//#region variáveis
+
 //true é circulo - false é quadrado
-
 let vezDoJogador = undefined
-
 let areaDosBotoes = document.getElementById("escolha-jogador")
-
-const botaoCirculo = document.getElementById("circulo").addEventListener("click", () => {
-    vezDoJogador = true
-    areaDosBotoes.style.display = "none"
-})
-const botaoQuadrado = document.getElementById("quadrado").addEventListener("click", () => {
-    vezDoJogador = false
-    areaDosBotoes.style.display = "none"
-})
 
 const square1 = document.querySelector(".square-1")
 const square2 = document.querySelector(".square-2")
@@ -22,27 +13,47 @@ const square6 = document.querySelector(".square-6")
 const square7 = document.querySelector(".square-7")
 const square8 = document.querySelector(".square-8")
 const square9 = document.querySelector(".square-9")
+//#endregion
+
+const botaoCirculo = document.getElementById("circulo").addEventListener("click", () => {
+    vezDoJogador = true
+    areaDosBotoes.style.display = "none"
+})    
+const botaoQuadrado = document.getElementById("quadrado").addEventListener("click", () => {
+    vezDoJogador = false
+    areaDosBotoes.style.display = "none"
+})    
 
 
 function adicionaCirculo(circle) {
-    circle.classList.add("active-circle")
+    if(circle.classList.contains("active-square")){
+        return ""
+    } else {
+        circle.classList.add("active-circle")
+        vezDoJogador = false
+    }
 }
 
 function adicionaQuadrado(square) {
-    square.classList.add("active-square")
+    if(square.classList.contains("active-circle")){
+        return ""
+    } else {
+        square.classList.add("active-square")
+        vezDoJogador = true
+    }
 }
 
 function adicionaItem(areaSelecionada) {
     if(vezDoJogador == true){
         adicionaCirculo(areaSelecionada)
-        vezDoJogador = false
-    }else if (vezDoJogador == false){
+        // vezDoJogador = false
+    } else if (vezDoJogador == false){
         adicionaQuadrado(areaSelecionada)
-        vezDoJogador = true
+        // vezDoJogador = true
     }
 }   
 
-
+//#region adicionaItem
 square1.addEventListener("click", () => {
     adicionaItem(square1)
 })
@@ -78,4 +89,5 @@ square8.addEventListener("click", () => {
 square9.addEventListener("click", () => {
     adicionaItem(square9)
 })
+//#endregion
 
