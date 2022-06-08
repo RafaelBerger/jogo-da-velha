@@ -1,81 +1,86 @@
-//true é circulo - false é quadrado
+// #region Variáveis
+let vezDoJogador = undefined;
 
-let vezDoJogador = undefined
+let areaDosBotoes = document.getElementById("escolha-jogador");
+let areaDoJogo = document.getElementById("area-jogo");
+let vencedor = document.getElementById("vencedor");
+let telaDeVitoria = document.getElementById("tela-vitoria");
 
-let areaDosBotoes = document.getElementById("escolha-jogador")
+const btnO = document.querySelector("#o").addEventListener("click", () => {
+  vezDoJogador = "o";
+  jogoEstadoVisual();
+});
 
-const botaoCirculo = document.getElementById("circulo").addEventListener("click", () => {
-    vezDoJogador = true
-    areaDosBotoes.style.display = "none"
-})
-const botaoQuadrado = document.getElementById("quadrado").addEventListener("click", () => {
-    vezDoJogador = false
-    areaDosBotoes.style.display = "none"
-})
+const btnX = document.querySelector("#x").addEventListener("click", () => {
+  vezDoJogador = "x";
+  jogoEstadoVisual();
+});
 
-const square1 = document.querySelector(".square-1")
-const square2 = document.querySelector(".square-2")
-const square3 = document.querySelector(".square-3")
-const square4 = document.querySelector(".square-4")
-const square5 = document.querySelector(".square-5")
-const square6 = document.querySelector(".square-6")
-const square7 = document.querySelector(".square-7")
-const square8 = document.querySelector(".square-8")
-const square9 = document.querySelector(".square-9")
+let movimentosDoO = [];
+let movimentosDoX = [];
+//#endregion
 
+const jogoEstadoVisual = () => {
+  if (vezDoJogador === undefined) {
+    areaDoJogo.style.display = "none";
+  } else {
+    areaDoJogo.style.display = "grid";
+    areaDosBotoes.style.display = "none";
+  }
+};
 
-function adicionaCirculo(circle) {
-    circle.classList.add("active-circle")
-}
+// jogoEstadoVisual();
 
-function adicionaQuadrado(square) {
-    square.classList.add("active-square")
-}
-
-function adicionaItem(areaSelecionada) {
-    if(vezDoJogador == true){
-        adicionaCirculo(areaSelecionada)
-        vezDoJogador = false
-    }else if (vezDoJogador == false){
-        adicionaQuadrado(areaSelecionada)
-        vezDoJogador = true
+document.addEventListener("click", (event) => {
+  if (event.target.id == "body") {
+    return "";
+  } else {
+    if (vezDoJogador == "o" && event.target.innerText == "") {
+      event.target.innerText = "O";
+      movimentosDoO.push(event.target.id);
+      vezDoJogador = "x";
+      // checaVitoria();
+      console.log(movimentosDoO);
+    } else if (vezDoJogador == "x" && event.target.innerText == "") {
+      event.target.innerText = "X";
+      movimentosDoX.push(event.target.id);
+      vezDoJogador = "o";
+      // checaVitoria();
     }
-}   
+    checaVitoria();
+  }
+});
 
+function checaVitoria() {
+  if (
+    movimentosDoO.includes(
+      ("1" && "2" && "3") ||
+        ("4" && "5" && "6") ||
+        ("7" && "8" && "9") ||
+        ("1" && "4" && "7") ||
+        ("2" && "5" && "8") ||
+        ("3" && "6" && "9") ||
+        ("3" && "5" && "7") ||
+        ("1" && "5" && "9")
+    ) === true
+  ) {
+    telaDeVitoria.display = "flex";
+    vencedor.innerText = "O jogador O ganhou!";
+  }
 
-square1.addEventListener("click", () => {
-    adicionaItem(square1)
-})
-
-square2.addEventListener("click", () => {
-    adicionaItem(square2)
-})
-
-square3.addEventListener("click", () => {
-    adicionaItem(square3)
-})
-
-square4.addEventListener("click", () => {
-    adicionaItem(square4)
-})
-
-square5.addEventListener("click", () => {
-    adicionaItem(square5)
-})
-
-square6.addEventListener("click", () => {
-    adicionaItem(square6)
-})
-
-square7.addEventListener("click", () => {
-    adicionaItem(square7)
-})
-
-square8.addEventListener("click", () => {
-    adicionaItem(square8)
-})
-
-square9.addEventListener("click", () => {
-    adicionaItem(square9)
-})
-
+  if (
+    movimentosDoX.includes(
+      ("1" && "2" && "3") ||
+        ("4" && "5" && "6") ||
+        ("7" && "8" && "9") ||
+        ("1" && "4" && "7") ||
+        ("2" && "5" && "8") ||
+        ("3" && "6" && "9") ||
+        ("3" && "5" && "7") ||
+        ("1" && "5" && "9")
+    ) === true
+  ) {
+    telaDeVitoria.display = "flex";
+    vencedor.innerText = "O jogador X ganhou!";
+  }
+}
