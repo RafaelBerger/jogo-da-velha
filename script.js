@@ -15,9 +15,11 @@ const board = document.querySelector("#area-jogo");
 const choosePlayer = document.querySelector("#escolha-jogador");
 
 //#endregion
+
 // #region Variáveis
-const quadrados = document.querySelectorAll(".square");
-let combinacoesVitoria = [
+const squares = document.querySelectorAll(".square");
+console.log(squares[0].classList);
+let winningCombination = [
   ["1", "2", "3"],
   ["4", "5", "6"],
   ["7", "8", "9"],
@@ -31,16 +33,32 @@ let playerTurn;
 
 //#endregion
 
-quadrados.forEach((square) => {
+squares.forEach((square) => {
   square.addEventListener("click", handleClick, { once: true });
 });
 
 function handleClick(e) {
   if (playerTurn == "o") {
+    e.target.classList.add(CIRCLE);
     e.target.innerText = "O";
     playerTurn = "x";
   } else if (playerTurn == "x") {
+    e.target.classList.add(X);
     e.target.innerText = "X";
     playerTurn = "o";
   }
+  if (checkWin()) {
+    console.log("ganhou");
+  }
 }
+
+function checkWin() {
+  winningCombination.some((combinations) => {
+    return combinations.every((index) => {
+      squares[index].classList.contains(CIRCLE || X);
+    });
+  });
+}
+
+//TODO: Bugs com as classes, descobrir o porquê não está funcionando classList.add (está undefined)
+//
