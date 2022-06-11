@@ -17,17 +17,19 @@ const choosePlayer = document.querySelector("#escolha-jogador");
 //#endregion
 
 // #region Variáveis
-const squares = document.querySelectorAll(".square");
-console.log(squares[0].classList);
+let xClass = "x-class";
+let oClass = "o-class";
+
+const squares = document.querySelectorAll("#squares");
 let winningCombination = [
-  ["1", "2", "3"],
-  ["4", "5", "6"],
-  ["7", "8", "9"],
-  ["1", "4", "7"],
-  ["2", "5", "8"],
-  ["3", "6", "9"],
-  ["3", "5", "7"],
-  ["1", "5", "9"],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
 ];
 let playerTurn;
 
@@ -38,26 +40,36 @@ squares.forEach((square) => {
 });
 
 function handleClick(e) {
+  const element = e.target;
+  const currentClass = playerTurn == "o" ? oClass : xClass;
+
   if (playerTurn == "o") {
-    e.target.classList.add(CIRCLE);
     e.target.innerText = "O";
-    playerTurn = "x";
   } else if (playerTurn == "x") {
-    e.target.classList.add(X);
     e.target.innerText = "X";
-    playerTurn = "o";
   }
-  if (checkWin()) {
-    console.log("ganhou");
+  addClassToElement(element, currentClass);
+
+  if (checkWin(currentClass)) {
   }
+  swapTurn();
 }
 
-function checkWin() {
-  winningCombination.some((combinations) => {
+function checkWin(currentClass) {
+  return winningCombination.some((combinations) => {
     return combinations.every((index) => {
-      squares[index].classList.contains(CIRCLE || X);
+      return squares[index].classList.contains(currentClass);
     });
   });
+}
+
+function swapTurn() {
+  playerTurn == "o" ? (playerTurn = "x") : (playerTurn = "o");
+}
+
+function addClassToElement(element, currentClass) {
+  element.classList.add(currentClass);
+  console.log(element);
 }
 
 //TODO: Bugs com as classes, descobrir o porquê não está funcionando classList.add (está undefined)
