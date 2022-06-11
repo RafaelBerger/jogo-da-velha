@@ -106,6 +106,13 @@ h1 {
   gap: 1rem;
 }
 
+#tela-vitoria {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 @media (max-width: 600px) {
   li {
     width: 110px;

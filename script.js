@@ -1,19 +1,24 @@
 // #region handle the screen
 
 const btnO = document.querySelector("#o").addEventListener("click", () => {
-  playerTurn = "o";
+  playerTurn = "O";
   board.style.display = "grid";
   choosePlayer.style.display = "none";
 });
 const btnX = document.querySelector("#x").addEventListener("click", () => {
-  playerTurn = "x";
+  playerTurn = "X";
   board.style.display = "grid";
   choosePlayer.style.display = "none";
+});
+const btnPlayAgain = document.querySelector("#play-again");
+
+btnPlayAgain.addEventListener("click", () => {
+  window.location.reload();
 });
 
 const board = document.querySelector("#area-jogo");
 const choosePlayer = document.querySelector("#escolha-jogador");
-
+const winnerScreen = document.querySelector("#vencedor");
 //#endregion
 
 // #region Variáveis
@@ -41,18 +46,25 @@ squares.forEach((square) => {
 
 function handleClick(e) {
   const element = e.target;
-  const currentClass = playerTurn == "o" ? oClass : xClass;
+  const currentClass = playerTurn == "O" ? oClass : xClass;
 
-  if (playerTurn == "o") {
-    e.target.innerText = "O";
-  } else if (playerTurn == "x") {
-    e.target.innerText = "X";
-  }
   addClassToElement(element, currentClass);
 
-  if (checkWin(currentClass)) {
+  if (winnerScreen.innerText == "") {
+    if (playerTurn == "O") {
+      e.target.innerText = "O";
+    } else if (playerTurn == "X") {
+      e.target.innerText = "X";
+    }
   }
-  swapTurn();
+
+  if (checkWin(currentClass)) {
+    endGame(false);
+  } else if (checkDraw()) {
+    endGame(true);
+  } else {
+    swapTurn();
+  }
 }
 
 function checkWin(currentClass) {
@@ -63,14 +75,27 @@ function checkWin(currentClass) {
   });
 }
 
+function checkDraw() {
+  return [...squares].every((square) => {
+    return (
+      square.classList.contains(xClass) || square.classList.contains(oClass)
+    );
+  });
+}
+
+function endGame(draw) {
+  btnPlayAgain.style.display = "flex";
+  if (draw) {
+    winnerScreen.innerText = `Empate`;
+  } else if (winnerScreen.innerText == "") {
+    winnerScreen.innerText = `O jogador ${playerTurn} ganhou`;
+  }
+}
+
 function swapTurn() {
-  playerTurn == "o" ? (playerTurn = "x") : (playerTurn = "o");
+  playerTurn == "O" ? (playerTurn = "X") : (playerTurn = "O");
 }
 
 function addClassToElement(element, currentClass) {
   element.classList.add(currentClass);
-  console.log(element);
 }
-
-//TODO: Bugs com as classes, descobrir o porquê não está funcionando classList.add (está undefined)
-//
